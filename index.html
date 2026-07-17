@@ -184,8 +184,9 @@ function saveSettings(s){ localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
 let entries = loadEntries();
 let settings = loadSettings();
 
-function buildDailyMessage(entry){
-  return `${toMMDDYYYY(entry.date)}\n${entry.address} - ${entry.hours}h`;
+function buildDailyMessage(date, addrMap){
+  const lines = [...addrMap.entries()].map(([addr,hrs]) => `${addr} - ${hrs}h`);
+  return `${toMMDDYYYY(date)}\n${lines.join('\n')}`;
 }
 
 function buildSummary(list){
@@ -275,11 +276,16 @@ function openMail(subject, body){
 
 function render(){
   const sorted = [...entries].sort((a,b)=> a.date<b.date?1:-1);
-  const last = sorted[0];
+  const lastDate = sorted[0] ? sorted[0].date : null;
   const dailySection = document.getElementById('dailySection');
-  if(last){
+  if(lastDate){
+    const addrMap = new Map();
+    for(const e of entries){
+      if(e.date !== lastDate) continue;
+      addrMap.set(e.address, (addrMap.get(e.address)||0) + Number(e.hours));
+    }
     dailySection.style.display='';
-    document.getElementById('dailyPreview').textContent = buildDailyMessage(last);
+    document.getElementById('dailyPreview').textContent = buildDailyMessage(lastDate, addrMap);
   } else {
     dailySection.style.display='none';
   }
