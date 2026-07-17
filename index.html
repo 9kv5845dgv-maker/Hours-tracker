@@ -8,91 +8,118 @@
 <meta name="apple-mobile-web-app-title" content="Hours">
 <title>Hours Tracker — Fallen Horizon</title>
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230b0d10'/%3E%3Cpath d='M55 15 L30 55 H48 L42 85 L70 42 H52 Z' fill='%232b6cee'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0b0d10; --panel:#14171c; --panel2:#0f1216; --line:rgba(255,255,255,.08);
-    --text:#f2f3f5; --dim:rgba(255,255,255,.45); --dim2:rgba(255,255,255,.25);
-    --blue:#2b6cee; --blue-d:#1e56c9; --red:#ff5c5c; --green:#31c46e;
+    --bg:#000000; --panel:#050805; --panel2:#020402; --line:rgba(0,255,65,.25);
+    --text:#00ff41; --dim:rgba(0,255,65,.55); --dim2:rgba(0,255,65,.3);
+    --blue:#00ff41; --blue-d:#00cc33; --red:#ff3b3b; --green:#00ff41;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   html,body{margin:0; padding:0; background:var(--bg); color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;
+    font-family:'JetBrains Mono', ui-monospace, Menlo, monospace;
     -webkit-font-smoothing:antialiased;}
-  body{padding-bottom:env(safe-area-inset-bottom); padding-top:env(safe-area-inset-top);}
+  body{
+    padding-bottom:env(safe-area-inset-bottom); padding-top:env(safe-area-inset-top);
+    background-image: repeating-linear-gradient(0deg, rgba(0,255,65,0.04) 0px, rgba(0,255,65,0.04) 1px, transparent 1px, transparent 3px);
+  }
   .wrap{max-width:480px; margin:0 auto; padding:20px 16px 60px;}
 
   header{display:flex; align-items:center; gap:10px; margin-bottom:22px;}
-  .logo{width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg,var(--blue),var(--blue-d));
-    display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 4px 14px rgba(43,108,238,.35);}
-  .logo svg{width:18px; height:18px;}
-  h1{font-size:18px; font-weight:650; margin:0; letter-spacing:-0.01em;}
-  .sub{font-size:12px; color:var(--dim); margin:0;}
-  .gear{margin-left:auto; width:34px; height:34px; border-radius:10px; background:var(--panel);
+  .logo{width:36px; height:36px; border-radius:2px; background:transparent; border:2px solid var(--text);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 0 12px rgba(0,255,65,.5);}
+  .logo svg{width:18px; height:18px; filter: drop-shadow(0 0 3px #00ff41);}
+  h1{font-size:17px; font-weight:700; margin:0; letter-spacing:.02em; text-transform:uppercase;
+    text-shadow:0 0 6px rgba(0,255,65,.6);}
+  h1::before{content:"> "; opacity:.7;}
+  .sub{font-size:11px; color:var(--dim); margin:0; letter-spacing:.03em;}
+  .gear{margin-left:auto; width:34px; height:34px; border-radius:2px; background:var(--panel);
     border:1px solid var(--line); display:flex; align-items:center; justify-content:center; cursor:pointer;}
-  .gear svg{width:16px; height:16px; opacity:.6;}
+  .gear svg{width:16px; height:16px; opacity:.8; filter: drop-shadow(0 0 2px #00ff41);}
 
-  section{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:16px; margin-bottom:14px;}
-  h2{font-size:13px; font-weight:600; color:var(--dim); margin:0 0 12px; text-transform:uppercase; letter-spacing:.03em;}
+  section{background:var(--panel); border:1px solid var(--line); border-radius:2px; padding:16px; margin-bottom:14px;
+    box-shadow: 0 0 0 1px rgba(0,255,65,.05), inset 0 0 20px rgba(0,255,65,.03);}
+  h2{font-size:12px; font-weight:700; color:var(--text); margin:0 0 12px; text-transform:uppercase; letter-spacing:.08em;
+    border-bottom:1px dashed var(--line); padding-bottom:8px;}
+  h2::before{content:"$ "; opacity:.6;}
 
-  label{font-size:11px; color:var(--dim2); display:block; margin-bottom:4px;}
+  label{font-size:10px; color:var(--dim); display:block; margin-bottom:4px; text-transform:uppercase; letter-spacing:.05em;}
+  label::before{content:"// ";}
   input[type=text], input[type=number], input[type=date], input[type=tel], input[type=email]{
     width:100%; background:var(--panel2); border:1px solid var(--line); color:var(--text);
-    border-radius:10px; padding:10px 12px; font-size:15px; font-family:inherit; outline:none;
+    border-radius:2px; padding:10px 12px; font-size:15px; font-family:inherit; outline:none;
+    caret-color: var(--text);
   }
-  input:focus{border-color:var(--blue);}
+  input:focus{border-color:var(--text); animation: fieldPulse 1s ease-in-out infinite; }
+  @keyframes fieldPulse{
+    0%, 100% { box-shadow: 0 0 6px rgba(0,255,65,.25), inset 0 0 0 rgba(0,255,65,0); }
+    50% { box-shadow: 0 0 14px rgba(0,255,65,.75), inset 0 0 6px rgba(0,255,65,.15); }
+  }
+  input::placeholder{color:rgba(0,255,65,.25);}
   .row{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;}
   .field{margin-bottom:10px;}
 
-  .btn{border:none; border-radius:10px; padding:11px 14px; font-size:14px; font-weight:600;
+  .btn{border:1px solid var(--text); border-radius:2px; padding:11px 14px; font-size:13px; font-weight:700;
     display:inline-flex; align-items:center; justify-content:center; gap:6px; cursor:pointer;
-    font-family:inherit; transition:transform .08s ease, opacity .15s ease;}
-  .btn:active{transform:scale(.96);}
-  .btn:disabled{opacity:.3; cursor:not-allowed;}
-  .btn-primary{background:var(--blue); color:#fff; width:100%;}
+    font-family:inherit; transition:transform .08s ease, opacity .15s ease, background .15s ease;
+    text-transform:uppercase; letter-spacing:.05em; background:transparent; color:var(--text);}
+  .btn:active{transform:scale(.96); background:rgba(0,255,65,.15);}
+  .btn:disabled{opacity:.25; cursor:not-allowed;}
+  .btn-primary{background:var(--text); color:#000; width:100%; box-shadow:0 0 10px rgba(0,255,65,.4);}
   .btn-primary:active{background:var(--blue-d);}
   .btn-ghost{background:transparent; border:1px solid var(--line); color:var(--dim); flex:1;}
-  .btn-soft{background:rgba(43,108,238,.12); color:#8db3ff; flex:1;}
+  .btn-soft{background:rgba(0,255,65,.08); color:var(--text); flex:1;}
   .btn-row{display:flex; gap:8px; margin-top:10px;}
 
   pre.preview{white-space:pre-wrap; word-break:break-word; background:var(--panel2); border:1px solid var(--line);
-    border-radius:10px; padding:12px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:13px;
-    line-height:1.5; margin:0 0 4px; color:#d7e2ff;}
+    border-radius:2px; padding:12px; font-family:'JetBrains Mono', ui-monospace, monospace; font-size:13px;
+    line-height:1.6; margin:0 0 4px; color:var(--text); text-shadow:0 0 4px rgba(0,255,65,.4);}
+  pre.preview::before{content:"root@fallen-horizon:~$ cat message.txt\A"; opacity:.4; white-space:pre;}
 
-  .empty{font-size:13px; color:var(--dim2); padding:6px 2px;}
+  .empty{font-size:12px; color:var(--dim2); padding:6px 2px;}
+  .empty::before{content:"[ NO DATA ] ";}
 
   .entry{display:flex; align-items:center; justify-content:space-between; background:var(--panel);
-    border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px;}
-  .entry .meta{font-size:14px;}
-  .entry .date{font-family:ui-monospace,monospace; font-size:11.5px; color:var(--dim); margin-right:8px;}
+    border:1px solid var(--line); border-radius:2px; padding:10px 12px; margin-bottom:8px;}
+  .entry .meta{font-size:13px;}
+  .entry .date{font-family:inherit; font-size:11px; color:var(--dim); margin-right:8px;}
   .entry .addr{color:var(--text);}
   .entry .hrs{color:var(--dim); margin-left:6px;}
   .entry button{background:none; border:none; color:var(--dim2); padding:6px; cursor:pointer;}
   .entry button:active{color:var(--red);}
 
   .toast{position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
-    background:var(--green); color:#04140a; font-weight:700; font-size:13px;
-    padding:9px 16px; border-radius:100px; opacity:0; pointer-events:none; transition:opacity .25s, transform .25s;
-    box-shadow:0 8px 24px rgba(49,196,110,.35); z-index:50;}
+    background:#000; border:1px solid var(--text); color:var(--text); font-weight:700; font-size:12px;
+    padding:9px 16px; border-radius:2px; opacity:0; pointer-events:none; transition:opacity .25s, transform .25s;
+    box-shadow:0 0 16px rgba(0,255,65,.5); z-index:50; text-transform:uppercase; letter-spacing:.05em;}
   .toast.show{opacity:1; transform:translateX(-50%) translateY(-6px);}
 
-  .modal-bg{position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:flex-end; z-index:40;}
+  .modal-bg{position:fixed; inset:0; background:rgba(0,0,0,.85); display:none; align-items:flex-end; z-index:40;}
   .modal-bg.show{display:flex;}
-  .modal{background:var(--panel); width:100%; border-radius:20px 20px 0 0; padding:20px 16px calc(24px + env(safe-area-inset-bottom));
-    border-top:1px solid var(--line);}
-  .modal h3{margin:0 0 14px; font-size:15px;}
+  .modal{background:var(--panel); width:100%; border-radius:0; padding:20px 16px calc(24px + env(safe-area-inset-bottom));
+    border-top:1px solid var(--text); box-shadow:0 0 20px rgba(0,255,65,.3);}
+  .modal h3{margin:0 0 14px; font-size:14px; text-transform:uppercase; letter-spacing:.05em;}
+  .modal h3::before{content:"> ";}
   .modal .close{width:100%; margin-top:14px;}
 
-  .hint{font-size:11px; color:var(--dim2); margin-top:8px; line-height:1.5;}
+  .hint{font-size:10px; color:var(--dim2); margin-top:8px; line-height:1.6; letter-spacing:.02em;}
+  .hint::before{content:"# ";}
+
+  @keyframes blink{ 50%{ opacity:0; } }
+  .cursor{display:inline-block; width:8px; height:14px; background:var(--text); margin-left:4px;
+    animation:blink 1s step-end infinite; vertical-align:middle; box-shadow:0 0 6px rgba(0,255,65,.8);}
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <header>
-    <div class="logo"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" fill="#fff"/></svg></div>
+    <div class="logo"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4V4z" stroke="#00ff41" stroke-width="1.5" fill="none"/><path d="M8 9l3 3-3 3M13 15h4" stroke="#00ff41" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div>
-      <h1>Hours Tracker</h1>
-      <p class="sub">Fallen Horizon LLC</p>
+      <h1>Hours_Tracker<span class="cursor"></span></h1>
+      <p class="sub">fallen_horizon_llc // secure_shell</p>
     </div>
     <div class="gear" id="openSettings">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.34 1.87l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.7 1.7 0 00-1.87-.34 1.7 1.7 0 00-1 1.55V21a2 2 0 01-4 0v-.09A1.7 1.7 0 009 19.4a1.7 1.7 0 00-1.87.34l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.7 1.7 0 004.6 15a1.7 1.7 0 00-1.55-1H3a2 2 0 010-4h.09A1.7 1.7 0 004.6 9a1.7 1.7 0 00-.34-1.87l-.06-.06a2 2 0 112.83-2.83l.06.06A1.7 1.7 0 009 4.6a1.7 1.7 0 001-1.55V3a2 2 0 014 0v.09a1.7 1.7 0 001 1.55 1.7 1.7 0 001.87-.34l.06-.06a2 2 0 112.83 2.83l-.06.06A1.7 1.7 0 0019.4 9a1.7 1.7 0 001.55 1H21a2 2 0 010 4h-.09a1.7 1.7 0 00-1.55 1z"/></svg>
@@ -100,7 +127,7 @@
   </header>
 
   <section>
-    <h2>New entry</h2>
+    <h2>new_entry.sh</h2>
     <div class="field">
       <label>Date</label>
       <input type="date" id="inDate">
@@ -115,22 +142,22 @@
         <input type="number" id="inHours" step="0.5" min="0" placeholder="0">
       </div>
       <div style="display:flex; align-items:flex-end;">
-        <button class="btn btn-primary" id="addBtn">Add</button>
+        <button class="btn btn-primary" id="addBtn">[ Execute ]</button>
       </div>
     </div>
   </section>
 
   <section id="dailySection" style="display:none">
-    <h2>Today's text</h2>
+    <h2>today.log</h2>
     <pre class="preview" id="dailyPreview"></pre>
     <div class="btn-row">
-      <button class="btn btn-soft" id="sendDailySms">Send text</button>
-      <button class="btn btn-ghost" id="copyDaily">Copy</button>
+      <button class="btn btn-soft" id="sendDailySms">[ Transmit ]</button>
+      <button class="btn btn-ghost" id="copyDaily">[ Copy ]</button>
     </div>
   </section>
 
   <section>
-    <h2>Period summary</h2>
+    <h2>period_summary.log</h2>
     <div class="row">
       <div><label>From</label><input type="date" id="rangeStart"></div>
       <div><label>To</label><input type="date" id="rangeEnd"></div>
@@ -141,11 +168,11 @@
   </section>
 
   <section id="listSection" style="display:none">
-    <h2>All entries</h2>
+    <h2>all_entries.db</h2>
     <div id="entriesList"></div>
   </section>
 
-  <p class="hint">Data is stored locally in this browser, on this device. Nothing is sent automatically — the send buttons only open Messages / Mail with the text ready, you send it yourself.</p>
+  <p class="hint">Data stored locally on this device. Nothing transmitted automatically — send actions only open Messages / Mail with the payload ready, you execute the send.</p>
 
 </div>
 
@@ -153,7 +180,7 @@
 
 <div class="modal-bg" id="settingsModal">
   <div class="modal">
-    <h3>Settings</h3>
+    <h3>config.sys</h3>
     <div class="field">
       <label>Boss's phone number</label>
       <input type="tel" id="setPhone" placeholder="+1 312 555 0100">
@@ -162,7 +189,7 @@
       <label>Company email (for duplicate copy)</label>
       <input type="email" id="setEmail" placeholder="office@company.com">
     </div>
-    <button class="btn btn-primary close" id="saveSettings">Save</button>
+    <button class="btn btn-primary close" id="saveSettings">[ Save & Exit ]</button>
   </div>
 </div>
 
@@ -299,12 +326,12 @@ function render(){
     box.innerHTML = `
       <pre class="preview">${summary}</pre>
       <div class="btn-row">
-        <button class="btn btn-soft" id="sendSummarySms">Send text</button>
-        <button class="btn btn-soft" id="sendSummaryMail">Duplicate to email</button>
+        <button class="btn btn-soft" id="sendSummarySms">[ Transmit ]</button>
+        <button class="btn btn-soft" id="sendSummaryMail">[ Mirror to Email ]</button>
       </div>
       <div class="btn-row">
-        <button class="btn btn-ghost" id="copySummary">Copy</button>
-        <button class="btn btn-ghost" id="clearPeriod">Sent — clear</button>
+        <button class="btn btn-ghost" id="copySummary">[ Copy ]</button>
+        <button class="btn btn-ghost" id="clearPeriod">[ Purge Sent ]</button>
       </div>
     `;
     document.getElementById('sendSummarySms').onclick = ()=> openSms(summary);
