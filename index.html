@@ -190,19 +190,32 @@ function buildDailyMessage(entry){
 
 function buildSummary(list){
   if(list.length===0) return '';
-  const byAddressDate = new Map();
+
+  // aggregate hours per (date, address)
+  const byDate = new Map();
   for(const e of list){
-    const key = e.address+'||'+e.date;
-    byAddressDate.set(key, (byAddressDate.get(key)||0) + Number(e.hours));
+    if(!byDate.has(e.date)) byDate.set(e.date, new Map());
+    const addrMap = byDate.get(e.date);
+    addrMap.set(e.address, (addrMap.get(e.address)||0) + Number(e.hours));
   }
-  const byAddress = new Map();
-  for(const [key,hours] of byAddressDate){
-    const [address,date] = key.split('||');
-    if(!byAddress.has(address)) byAddress.set(address, []);
-    byAddress.get(address).push({date,hours});
+
+  const blocks = [];
+  const singleAddressDates = new Map(); // address -> [{date, hours}]
+
+  for(const [date, addrMap] of byDate){
+    if(addrMap.size > 1){
+      // multiple job sites same day: date printed once, addresses listed below
+      const lines = [...addrMap.entries()].map(([addr,hrs]) => `${addr} - ${hrs}h`);
+      const total = [...addrMap.values()].reduce((s,h)=>s+h,0);
+      blocks.push({ earliest: date, dateLine: toMMDDYYYY(date), lines, total });
+    } else {
+      const [addr, hrs] = [...addrMap.entries()][0];
+      if(!singleAddressDates.has(addr)) singleAddressDates.set(addr, []);
+      singleAddressDates.get(addr).push({date, hours: hrs});
+    }
   }
-  const groups = [];
-  for(const [address,items] of byAddress){
+
+  for(const [address, items] of singleAddressDates){
     items.sort((a,b)=> a.date<b.date?-1:1);
     const totalHours = items.reduce((s,i)=>s+i.hours,0);
     const earliest = items[0].date;
@@ -217,11 +230,12 @@ function buildSummary(list){
     const runLabels = runs.map(r => r.length===1 ? toMMDD(r[0]) : `${toMMDD(r[0])} - ${toMMDD(r[r.length-1])}`);
     const year = items[items.length-1].date.split('-')[0];
     const dateLine = runLabels.join('; ') + '.' + year;
-    groups.push({address, dateLine, totalHours, earliest});
+    blocks.push({ earliest, dateLine, lines: [`${address} - ${totalHours}h`], total: totalHours });
   }
-  groups.sort((a,b)=> a.earliest<b.earliest?-1:1);
-  const lines = groups.map(g=>`${g.dateLine}\n${g.address} - ${g.totalHours}h`);
-  const grandTotal = groups.reduce((s,g)=>s+g.totalHours,0);
+
+  blocks.sort((a,b)=> a.earliest<b.earliest?-1:1);
+  const lines = blocks.map(b => `${b.dateLine}\n${b.lines.join('\n')}`);
+  const grandTotal = blocks.reduce((s,b)=>s+b.total,0);
   lines.push(`Total: ${grandTotal} hours`);
   return lines.join('\n');
 }
