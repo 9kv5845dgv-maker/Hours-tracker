@@ -449,7 +449,9 @@ function escapeHtml(str){
 }
 
 function buildDailyMessage(date, addrMap){
-  const lines = [...addrMap.entries()].map(([addr,hrs]) => `${escapeHtml(addr)} - ${hrs}h`);
+  const pairs = [...addrMap.entries()].map(([addr,hrs]) => [escapeHtml(addr), hrs]);
+  const maxLen = Math.max(...pairs.map(([addr]) => addr.length));
+  const lines = pairs.map(([addr,hrs]) => `${addr.padEnd(maxLen)} - ${hrs}h`);
   return `<span class="date-gold">${toMMDDYYYY(date)}</span>\n${lines.join('\n')}`;
 }
 
@@ -470,9 +472,9 @@ function buildSummary(list){
   for(const [date, addrMap] of byDate){
     if(addrMap.size > 1){
       // multiple job sites same day: date printed once, addresses listed below
-      const lines = [...addrMap.entries()].map(([addr,hrs]) => `${escapeHtml(addr)} - ${hrs}h`);
+      const pairs = [...addrMap.entries()].map(([addr,hrs]) => [escapeHtml(addr), hrs]);
       const total = [...addrMap.values()].reduce((s,h)=>s+h,0);
-      blocks.push({ earliest: date, dateLine: toMMDDYYYY(date), lines, total });
+      blocks.push({ earliest: date, dateLine: toMMDDYYYY(date), pairs, total });
     } else {
       const [addr, hrs] = [...addrMap.entries()][0];
       if(!singleAddressDates.has(addr)) singleAddressDates.set(addr, []);
@@ -495,11 +497,15 @@ function buildSummary(list){
     const runLabels = runs.map(r => r.length===1 ? toMMDD(r[0]) : `${toMMDD(r[0])} - ${toMMDD(r[r.length-1])}`);
     const year = items[items.length-1].date.split('-')[0];
     const dateLine = runLabels.join('; ') + '.' + year;
-    blocks.push({ earliest, dateLine, lines: [`${escapeHtml(address)} - ${totalHours}h`], total: totalHours });
+    blocks.push({ earliest, dateLine, pairs: [[escapeHtml(address), totalHours]], total: totalHours });
   }
 
   blocks.sort((a,b)=> a.earliest<b.earliest?-1:1);
-  const lines = blocks.map(b => `<span class="date-gold">${b.dateLine}</span>\n${b.lines.join('\n')}`);
+  const maxLen = Math.max(...blocks.flatMap(b => b.pairs.map(([addr]) => addr.length)));
+  const lines = blocks.map(b => {
+    const blockLines = b.pairs.map(([addr,hrs]) => `${addr.padEnd(maxLen)} - ${hrs}h`);
+    return `<span class="date-gold">${b.dateLine}</span>\n${blockLines.join('\n')}`;
+  });
   const grandTotal = blocks.reduce((s,b)=>s+b.total,0);
   lines.push(`Total: ${grandTotal} hours`);
   return lines.join('\n');
