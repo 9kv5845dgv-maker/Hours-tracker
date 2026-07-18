@@ -18,6 +18,8 @@
     --blue:#00ff41; --blue-d:#00cc33; --red:#ff3b3b; --green:#00ff41; --gold:#ffd873;
   }
   .date-gold{ color: var(--gold); text-shadow: 0 0 5px rgba(255,216,115,.55); font-weight:700; }
+  .edit-line{ cursor:pointer; text-decoration:underline dotted rgba(0,255,65,.4); text-underline-offset:3px; }
+  .edit-line:active{ opacity:.6; }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   html,body{margin:0; padding:0; background:var(--bg); color:var(--text);
     font-family:'JetBrains Mono', ui-monospace, Menlo, monospace;
@@ -110,7 +112,7 @@
   .modal h3::before{content:"> ";}
   .modal .close{width:100%; margin-top:14px;}
 
-  #entriesList{ max-height:180px; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-right:4px; }
+  #entriesList, #dailyEntriesList{ max-height:180px; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-right:4px; }
   .hint{font-size:10px; color:var(--dim2); margin-top:8px; line-height:1.6; letter-spacing:.02em;}
   .hint::before{content:"# ";}
 
@@ -253,11 +255,6 @@
       <button class="btn btn-soft" id="sendDailySms" data-i18n="transmitBtn">[ Transmit ]</button>
       <button class="btn btn-ghost" id="copyDaily" data-i18n="copyBtn">[ Copy ]</button>
     </div>
-  </section>
-
-  <section id="listSection" style="display:none">
-    <h2 data-i18n="allEntriesHeader">all_entries.db</h2>
-    <div id="entriesList"></div>
   </section>
 
   <p class="hint" data-i18n="hint">Data stored locally on this device. Nothing transmitted automatically — send actions only open Messages / Mail with the payload ready, you execute the send.</p>
@@ -449,10 +446,19 @@ function escapeHtml(str){
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-function buildDailyMessage(date, addrMap){
-  const pairs = [...addrMap.entries()].map(([addr,hrs]) => [escapeHtml(addr), hrs]);
+function buildDailyMessage(date, dayEntries){
+  const addrMap = new Map(); // address -> { hours, ids: [] }
+  for(const e of dayEntries){
+    if(!addrMap.has(e.address)) addrMap.set(e.address, { hours:0, ids:[] });
+    const g = addrMap.get(e.address);
+    g.hours += Number(e.hours);
+    g.ids.push(e.id);
+  }
+  const pairs = [...addrMap.entries()].map(([addr,g]) => [escapeHtml(addr), g.hours, g.ids]);
   const maxLen = Math.max(...pairs.map(([addr]) => addr.length));
-  const lines = pairs.map(([addr,hrs]) => `${addr.padEnd(maxLen)} - ${hrs}h`);
+  const lines = pairs.map(([addr,hrs,ids]) =>
+    `<span class="edit-line" data-edit-ids="${ids.join(',')}">${addr.padEnd(maxLen)} - ${hrs}h</span>`
+  );
   return `<span class="date-gold">${toMMDDYYYY(date)}</span>\n${lines.join('\n')}`;
 }
 
@@ -554,18 +560,28 @@ function openMail(subject, body){
 function render(){
   const selectedDate = document.getElementById('inDate').value;
   const dailySection = document.getElementById('dailySection');
-  if(selectedDate){
-    const addrMap = new Map();
-    for(const e of entries){
-      if(e.date !== selectedDate) continue;
-      addrMap.set(e.address, (addrMap.get(e.address)||0) + Number(e.hours));
-    }
-    if(addrMap.size > 0){
-      dailySection.style.display='';
-      document.getElementById('dailyPreview').innerHTML = buildDailyMessage(selectedDate, addrMap);
-    } else {
-      dailySection.style.display='none';
-    }
+  const dayEntries = entries.filter(e => e.date === selectedDate);
+
+  if(selectedDate && dayEntries.length > 0){
+    dailySection.style.display='';
+    const dailyPreview = document.getElementById('dailyPreview');
+    dailyPreview.innerHTML = buildDailyMessage(selectedDate, dayEntries);
+    dailyPreview.querySelectorAll('[data-edit-ids]').forEach(el=>{
+      el.onclick = ()=>{
+        const ids = el.getAttribute('data-edit-ids').split(',').map(Number);
+        const matched = entries.filter(e => ids.includes(e.id));
+        if(matched.length === 0) return;
+        const totalHours = matched.reduce((s,e)=>s+Number(e.hours),0);
+        document.getElementById('inDate').value = matched[0].date;
+        document.getElementById('inAddress').value = matched[0].address;
+        document.getElementById('inHours').value = totalHours;
+        entries = entries.filter(e => !ids.includes(e.id));
+        saveEntries(entries);
+        render();
+        document.getElementById('inAddress').scrollIntoView({behavior:'smooth', block:'center'});
+        showToast(t('editLoaded'));
+      };
+    });
   } else {
     dailySection.style.display='none';
   }
@@ -591,43 +607,6 @@ function render(){
     document.getElementById('copySummary').onclick = ()=> copyText(stripHtml(summary));
   } else {
     box.innerHTML = `<p class="empty">${t('noEntries')}</p>`;
-  }
-
-  const listSection = document.getElementById('listSection');
-  const listEl = document.getElementById('entriesList');
-  if(sorted.length){
-    listSection.style.display='';
-    listEl.innerHTML = sorted.map(e => `
-      <div class="entry" data-id="${e.id}">
-        <div class="meta" data-edit="${e.id}" style="cursor:pointer; flex:1;"><span class="date">${toMMDDYYYY(e.date)}</span><span class="addr">${e.address}</span><span class="hrs">— ${e.hours}h</span></div>
-        <button data-del="${e.id}">✕</button>
-      </div>
-    `).join('');
-    listEl.querySelectorAll('[data-del]').forEach(btn=>{
-      btn.onclick = ()=>{
-        const id = Number(btn.getAttribute('data-del'));
-        entries = entries.filter(e=>e.id!==id);
-        saveEntries(entries);
-        render();
-      };
-    });
-    listEl.querySelectorAll('[data-edit]').forEach(el=>{
-      el.onclick = ()=>{
-        const id = Number(el.getAttribute('data-edit'));
-        const entry = entries.find(e=>e.id===id);
-        if(!entry) return;
-        document.getElementById('inDate').value = entry.date;
-        document.getElementById('inAddress').value = entry.address;
-        document.getElementById('inHours').value = entry.hours;
-        entries = entries.filter(e=>e.id!==id);
-        saveEntries(entries);
-        render();
-        document.getElementById('inAddress').scrollIntoView({behavior:'smooth', block:'center'});
-        showToast(t('editLoaded'));
-      };
-    });
-  } else {
-    listSection.style.display='none';
   }
 }
 
