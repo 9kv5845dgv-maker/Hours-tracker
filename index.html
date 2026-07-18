@@ -10,13 +10,14 @@
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230b0d10'/%3E%3Cpath d='M55 15 L30 55 H48 L42 85 L70 42 H52 Z' fill='%232b6cee'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Baloo+2:wght@500;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#000000; --panel:#050805; --panel2:#020402; --line:rgba(0,255,65,.25);
     --text:#00ff41; --dim:rgba(0,255,65,.55); --dim2:rgba(0,255,65,.3);
-    --blue:#00ff41; --blue-d:#00cc33; --red:#ff3b3b; --green:#00ff41;
+    --blue:#00ff41; --blue-d:#00cc33; --red:#ff3b3b; --green:#00ff41; --gold:#ffd873;
   }
+  .date-gold{ color: var(--gold); text-shadow: 0 0 5px rgba(255,216,115,.55); font-weight:700; }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   html,body{margin:0; padding:0; background:var(--bg); color:var(--text);
     font-family:'JetBrains Mono', ui-monospace, Menlo, monospace;
@@ -85,7 +86,7 @@
   .entry{display:flex; align-items:center; justify-content:space-between; background:var(--panel);
     border:1px solid var(--line); border-radius:2px; padding:10px 12px; margin-bottom:8px;}
   .entry .meta{font-size:13px;}
-  .entry .date{font-family:inherit; font-size:11px; color:var(--dim); margin-right:8px;}
+  .entry .date{font-family:inherit; font-size:11px; color:var(--gold); margin-right:8px;}
   .entry .addr{color:var(--text);}
   .entry .hrs{color:var(--dim); margin-left:6px;}
   .entry button{background:none; border:none; color:var(--dim2); padding:6px; cursor:pointer;}
@@ -105,12 +106,98 @@
   .modal h3::before{content:"> ";}
   .modal .close{width:100%; margin-top:14px;}
 
+  #entriesList{ max-height:180px; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-right:4px; }
   .hint{font-size:10px; color:var(--dim2); margin-top:8px; line-height:1.6; letter-spacing:.02em;}
   .hint::before{content:"# ";}
 
   @keyframes blink{ 50%{ opacity:0; } }
   .cursor{display:inline-block; width:8px; height:14px; background:var(--text); margin-left:4px;
     animation:blink 1s step-end infinite; vertical-align:middle; box-shadow:0 0 6px rgba(0,255,65,.8);}
+
+  /* ================= THEME: macOS ================= */
+  html[data-theme="macos"] body{ background:#f5f5f7; background-image:none; }
+  html[data-theme="macos"] *{ font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif !important; }
+  html[data-theme="macos"] .cursor{ display:none; }
+  html[data-theme="macos"] h1{ text-shadow:none; text-transform:none; letter-spacing:normal; color:#1d1d1f; font-weight:650; }
+  html[data-theme="macos"] .sub{ color:rgba(0,0,0,.45); }
+  html[data-theme="macos"] .logo{ background:#0071e3; border:none; box-shadow:0 2px 8px rgba(0,113,227,.3); border-radius:10px; }
+  html[data-theme="macos"] .logo svg{ filter:none; }
+  html[data-theme="macos"] .gear{ background:#fff; border:1px solid rgba(0,0,0,.08); box-shadow:0 1px 3px rgba(0,0,0,.08); border-radius:10px; }
+  html[data-theme="macos"] .gear svg{ color:rgba(0,0,0,.5); filter:none; }
+  html[data-theme="macos"] section{ background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:16px;
+    box-shadow:0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04); }
+  html[data-theme="macos"] h2{ color:#1d1d1f; border-bottom:1px solid rgba(0,0,0,.06); text-transform:none; letter-spacing:normal; font-weight:600; }
+  html[data-theme="macos"] h2::before{ content:none; }
+  html[data-theme="macos"] label{ color:rgba(0,0,0,.45); text-transform:none; }
+  html[data-theme="macos"] label::before{ content:none; }
+  html[data-theme="macos"] input[type=text], html[data-theme="macos"] input[type=number], html[data-theme="macos"] input[type=date],
+  html[data-theme="macos"] input[type=tel], html[data-theme="macos"] input[type=email]{
+    background:#f5f5f7; border:1px solid rgba(0,0,0,.08); color:#1d1d1f; border-radius:10px; caret-color:#0071e3; }
+  html[data-theme="macos"] input:focus{ border-color:#0071e3; animation:none; box-shadow:0 0 0 4px rgba(0,113,227,.15); }
+  html[data-theme="macos"] input::placeholder{ color:rgba(0,0,0,.3); }
+  html[data-theme="macos"] .btn{ border-radius:10px; text-transform:none; letter-spacing:normal; font-weight:600; border:none; }
+  html[data-theme="macos"] .btn-primary{ background:#0071e3; color:#fff; box-shadow:0 2px 8px rgba(0,113,227,.3); }
+  html[data-theme="macos"] .btn-ghost{ background:#f5f5f7; border:1px solid rgba(0,0,0,.08); color:#1d1d1f; }
+  html[data-theme="macos"] .btn-soft{ background:rgba(0,113,227,.1); color:#0071e3; }
+  html[data-theme="macos"] pre.preview{ background:#f5f5f7; border:1px solid rgba(0,0,0,.06); color:#1d1d1f; text-shadow:none; border-radius:10px; }
+  html[data-theme="macos"] pre.preview::before{ content:none; }
+  html[data-theme="macos"] .date-gold{ color:#c9932a; text-shadow:none; }
+  html[data-theme="macos"] .entry{ background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:10px; }
+  html[data-theme="macos"] .entry .date{ color:#c9932a; }
+  html[data-theme="macos"] .empty::before{ content:none; }
+  html[data-theme="macos"] .hint::before{ content:none; }
+  html[data-theme="macos"] .hint{ color:rgba(0,0,0,.35); }
+  html[data-theme="macos"] .toast{ background:#1d1d1f; border:none; color:#fff; box-shadow:0 4px 16px rgba(0,0,0,.2);
+    text-transform:none; letter-spacing:normal; border-radius:100px; }
+  html[data-theme="macos"] .modal{ background:#fff; border-top:none; border-radius:20px 20px 0 0; box-shadow:0 -4px 24px rgba(0,0,0,.15); }
+  html[data-theme="macos"] .modal h3{ color:#1d1d1f; text-transform:none; letter-spacing:normal; }
+  html[data-theme="macos"] .modal h3::before{ content:none; }
+  html[data-theme="macos"] select#setTheme, html[data-theme="macos"] select#setLang{
+    background:#f5f5f7 !important; border:1px solid rgba(0,0,0,.08) !important; color:#1d1d1f !important; }
+
+  /* ================= THEME: FUN & COLORFUL ================= */
+  html[data-theme="fun"] body{ background:linear-gradient(160deg,#ffe0f5,#e5d9ff 45%,#d3f3ff); background-image:linear-gradient(160deg,#ffe0f5,#e5d9ff 45%,#d3f3ff); }
+  html[data-theme="fun"] *{ font-family:'Baloo 2','Quicksand',system-ui,sans-serif !important; }
+  html[data-theme="fun"] .cursor{ display:none; }
+  html[data-theme="fun"] h1{ text-shadow:none; text-transform:none; letter-spacing:normal; font-weight:800;
+    background:linear-gradient(90deg,#ff6fb5,#a855f7); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  html[data-theme="fun"] .sub{ color:#a855f7; font-weight:600; }
+  html[data-theme="fun"] .logo{ background:linear-gradient(135deg,#ff9ecb,#a78bfa); border:none; border-radius:14px;
+    box-shadow:0 4px 14px rgba(168,85,247,.4); }
+  html[data-theme="fun"] .logo svg{ filter:none; }
+  html[data-theme="fun"] .gear{ background:#fff; border:2px solid #ffd6ef; border-radius:14px; box-shadow:0 3px 0 #ffd6ef; }
+  html[data-theme="fun"] .gear svg{ color:#c454a0; filter:none; }
+  html[data-theme="fun"] section{ background:#fff; border:2px solid #ffe3f5; border-radius:24px;
+    box-shadow:0 6px 0 #ffe3f5, 0 8px 20px rgba(168,85,247,.15); }
+  html[data-theme="fun"] h2{ color:#a855f7; text-transform:none; letter-spacing:normal; border-bottom:2px dashed #ffd6ef; font-weight:700; }
+  html[data-theme="fun"] h2::before{ content:none; }
+  html[data-theme="fun"] label{ color:#c454a0; text-transform:none; font-weight:600; }
+  html[data-theme="fun"] label::before{ content:none; }
+  html[data-theme="fun"] input[type=text], html[data-theme="fun"] input[type=number], html[data-theme="fun"] input[type=date],
+  html[data-theme="fun"] input[type=tel], html[data-theme="fun"] input[type=email]{
+    background:#fff7fc; border:2px solid #ffd6ef; color:#7c3aed; border-radius:16px; caret-color:#ff6fb5; }
+  html[data-theme="fun"] input:focus{ border-color:#ff6fb5; animation:none; box-shadow:0 0 0 4px rgba(255,111,181,.25); }
+  html[data-theme="fun"] input::placeholder{ color:#e0b3d8; }
+  html[data-theme="fun"] .btn{ border-radius:16px; text-transform:none; letter-spacing:normal; font-weight:700; border:none; }
+  html[data-theme="fun"] .btn-primary{ background:linear-gradient(135deg,#ff9ecb,#a78bfa); color:#fff; box-shadow:0 4px 0 #d896e8; }
+  html[data-theme="fun"] .btn-primary:active{ box-shadow:0 1px 0 #d896e8; transform:translateY(3px); }
+  html[data-theme="fun"] .btn-ghost{ background:#fff7fc; border:2px solid #ffd6ef; color:#a855f7; }
+  html[data-theme="fun"] .btn-soft{ background:#ffe3f5; color:#c454a0; }
+  html[data-theme="fun"] pre.preview{ background:#fff7fc; border:2px solid #ffe3f5; color:#7c3aed; text-shadow:none; border-radius:16px; }
+  html[data-theme="fun"] pre.preview::before{ content:none; }
+  html[data-theme="fun"] .date-gold{ color:#ff9a3c; text-shadow:none; font-weight:800; }
+  html[data-theme="fun"] .entry{ background:#fff; border:2px solid #ffe3f5; border-radius:16px; }
+  html[data-theme="fun"] .entry .date{ color:#ff9a3c; }
+  html[data-theme="fun"] .empty::before{ content:none; }
+  html[data-theme="fun"] .hint::before{ content:none; }
+  html[data-theme="fun"] .hint{ color:#c9a3dd; }
+  html[data-theme="fun"] .toast{ background:linear-gradient(135deg,#ff9ecb,#a78bfa); border:none; color:#fff;
+    box-shadow:0 4px 16px rgba(168,85,247,.4); text-transform:none; letter-spacing:normal; font-weight:700; border-radius:100px; }
+  html[data-theme="fun"] .modal{ background:#fff; border-top:none; border-radius:28px 28px 0 0; box-shadow:0 -4px 24px rgba(168,85,247,.25); }
+  html[data-theme="fun"] .modal h3{ color:#a855f7; text-transform:none; letter-spacing:normal; }
+  html[data-theme="fun"] .modal h3::before{ content:none; }
+  html[data-theme="fun"] select#setTheme, html[data-theme="fun"] select#setLang{
+    background:#fff7fc !important; border:2px solid #ffd6ef !important; color:#7c3aed !important; border-radius:12px !important; }
 </style>
 </head>
 <body>
@@ -120,7 +207,7 @@
     <div class="logo"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4V4z" stroke="#00ff41" stroke-width="1.5" fill="none"/><path d="M8 9l3 3-3 3M13 15h4" stroke="#00ff41" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div>
       <h1>Hours_Tracker<span class="cursor"></span></h1>
-      <p class="sub">fallen_horizon_llc // secure_shell</p>
+      <p class="sub" id="headerCompany">fallen_horizon_llc // secure_shell</p>
     </div>
     <div class="gear" id="openSettings">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.34 1.87l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.7 1.7 0 00-1.87-.34 1.7 1.7 0 00-1 1.55V21a2 2 0 01-4 0v-.09A1.7 1.7 0 009 19.4a1.7 1.7 0 00-1.87.34l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.7 1.7 0 004.6 15a1.7 1.7 0 00-1.55-1H3a2 2 0 010-4h.09A1.7 1.7 0 004.6 9a1.7 1.7 0 00-.34-1.87l-.06-.06a2 2 0 112.83-2.83l.06.06A1.7 1.7 0 009 4.6a1.7 1.7 0 001-1.55V3a2 2 0 014 0v.09a1.7 1.7 0 001 1.55 1.7 1.7 0 001.87-.34l.06-.06a2 2 0 112.83 2.83l-.06.06A1.7 1.7 0 0019.4 9a1.7 1.7 0 001.55 1H21a2 2 0 010 4h-.09a1.7 1.7 0 00-1.55 1z"/></svg>
@@ -128,52 +215,55 @@
   </header>
 
   <section>
-    <h2>new_entry.sh</h2>
+    <h2 data-i18n="newEntryHeader">new_entry.sh</h2>
     <div class="field">
-      <label>Date</label>
+      <label data-i18n="dateLabel">Date</label>
       <input type="date" id="inDate">
     </div>
     <div class="field">
-      <label>Address</label>
-      <input type="text" id="inAddress" placeholder="e.g. 1540 W Rosemont">
+      <label data-i18n="addressLabel">Address</label>
+      <div style="display:flex; gap:8px;">
+        <input type="text" id="inAddress" data-i18n-placeholder="addressPlaceholder" placeholder="e.g. 1540 W Rosemont" style="flex:1;">
+        <button type="button" class="btn btn-ghost" id="gpsBtn" style="flex:0 0 auto; padding:10px 12px;" data-i18n="gpsBtn">[ GPS ]</button>
+      </div>
     </div>
     <div class="row" style="margin-bottom:0">
       <div>
-        <label>Hours</label>
+        <label data-i18n="hoursLabel">Hours</label>
         <input type="number" id="inHours" step="0.5" min="0" placeholder="0">
       </div>
       <div style="display:flex; align-items:flex-end;">
-        <button class="btn btn-primary" id="addBtn">[ Execute ]</button>
+        <button class="btn btn-primary" id="addBtn" data-i18n="executeBtn">[ Execute ]</button>
       </div>
     </div>
   </section>
 
   <section id="dailySection" style="display:none">
-    <h2>today.log</h2>
+    <h2 data-i18n="todayLogHeader">today.log</h2>
     <pre class="preview" id="dailyPreview"></pre>
     <div class="btn-row">
-      <button class="btn btn-soft" id="sendDailySms">[ Transmit ]</button>
-      <button class="btn btn-ghost" id="copyDaily">[ Copy ]</button>
+      <button class="btn btn-soft" id="sendDailySms" data-i18n="transmitBtn">[ Transmit ]</button>
+      <button class="btn btn-ghost" id="copyDaily" data-i18n="copyBtn">[ Copy ]</button>
     </div>
   </section>
 
   <section>
-    <h2>period_summary.log</h2>
+    <h2 data-i18n="periodSummaryHeader">period_summary.log</h2>
     <div class="row">
-      <div><label>From</label><input type="date" id="rangeStart"></div>
-      <div><label>To</label><input type="date" id="rangeEnd"></div>
+      <div><label data-i18n="fromLabel">From</label><input type="date" id="rangeStart"></div>
+      <div><label data-i18n="toLabel">To</label><input type="date" id="rangeEnd"></div>
     </div>
     <div id="summaryBox">
-      <p class="empty">No entries in this period.</p>
+      <p class="empty" data-i18n="noEntries">No entries in this period.</p>
     </div>
   </section>
 
   <section id="listSection" style="display:none">
-    <h2>all_entries.db</h2>
+    <h2 data-i18n="allEntriesHeader">all_entries.db</h2>
     <div id="entriesList"></div>
   </section>
 
-  <p class="hint">Data stored locally on this device. Nothing transmitted automatically — send actions only open Messages / Mail with the payload ready, you execute the send.</p>
+  <p class="hint" data-i18n="hint">Data stored locally on this device. Nothing transmitted automatically — send actions only open Messages / Mail with the payload ready, you execute the send.</p>
 
 </div>
 
@@ -181,22 +271,149 @@
 
 <div class="modal-bg" id="settingsModal">
   <div class="modal">
-    <h3>config.sys</h3>
+    <h3 data-i18n="settingsHeader">config.sys</h3>
     <div class="field">
-      <label>Boss's phone number</label>
+      <label data-i18n="themeLabel">Theme</label>
+      <select id="setTheme" style="width:100%; background:#020402; border:1px solid rgba(0,255,65,.25); color:#00ff41; border-radius:2px; padding:10px 12px; font-size:15px; font-family:inherit;">
+        <option value="hacker">Hacker Terminal</option>
+        <option value="macos">macOS</option>
+        <option value="fun">Fun &amp; Colorful</option>
+      </select>
+    </div>
+    <div class="field">
+      <label data-i18n="languageLabel">Language</label>
+      <select id="setLang" style="width:100%; background:#020402; border:1px solid rgba(0,255,65,.25); color:#00ff41; border-radius:2px; padding:10px 12px; font-size:15px; font-family:inherit;">
+        <option value="en">English</option>
+        <option value="uk">Українська</option>
+        <option value="ru">Русский</option>
+        <option value="pl">Polski</option>
+        <option value="es">Español</option>
+        <option value="de">Deutsch</option>
+        <option value="fr">Français</option>
+      </select>
+    </div>
+    <div class="field">
+      <label data-i18n="companyNameLabel">Sender company name</label>
+      <input type="text" id="setCompanyName" placeholder="Fallen Horizon LLC">
+    </div>
+    <div class="field">
+      <label data-i18n="bossPhoneLabel">Boss's phone number</label>
       <input type="tel" id="setPhone" placeholder="+1 312 555 0100">
     </div>
     <div class="field">
-      <label>Company email (for duplicate copy)</label>
+      <label data-i18n="companyEmailLabel">Company email (for duplicate copy)</label>
       <input type="email" id="setEmail" placeholder="office@company.com">
     </div>
-    <button class="btn btn-primary close" id="saveSettings">[ Save & Exit ]</button>
+    <button class="btn btn-primary close" id="saveSettings" data-i18n="saveBtn">[ Save & Exit ]</button>
   </div>
 </div>
 
 <script>
 const STORAGE_KEY = 'ht_entries_v1';
 const SETTINGS_KEY = 'ht_settings_v1';
+const LANG_KEY = 'ht_lang_v1';
+
+const I18N = {
+  en: {
+    newEntryHeader:'new_entry.sh', dateLabel:'Date', addressLabel:'Address', addressPlaceholder:'e.g. 1540 W Rosemont',
+    hoursLabel:'Hours', executeBtn:'[ Execute ]', todayLogHeader:'today.log', transmitBtn:'[ Transmit ]', copyBtn:'[ Copy ]',
+    periodSummaryHeader:'period_summary.log', fromLabel:'From', toLabel:'To', noEntries:'No entries in this period.',
+    allEntriesHeader:'all_entries.db',
+    hint:'Data stored locally on this device. Nothing transmitted automatically — send actions only open Messages / Mail with the payload ready, you execute the send.',
+    settingsHeader:'config.sys', themeLabel:'Theme', languageLabel:'Language', companyNameLabel:'Sender company name', bossPhoneLabel:"Boss's phone number", companyEmailLabel:'Company email (for duplicate copy)', saveBtn:'[ Save & Exit ]',
+    mirrorMailBtn:'[ Mirror to Email ]', purgeSentBtn:'[ Purge Sent ]',
+    copied:'Copied', saved:'Saved', mailSubject:'Hours for period', gpsBtn:'[ GPS ]',
+    locating:'Locating...', locationError:'Location error', locationDenied:'Access denied'
+  },
+  ru: {
+    newEntryHeader:'новая_запись.sh', dateLabel:'Дата', addressLabel:'Адрес', addressPlaceholder:'напр. 1540 W Rosemont',
+    hoursLabel:'Часы', executeBtn:'[ Выполнить ]', todayLogHeader:'сегодня.log', transmitBtn:'[ Передать ]', copyBtn:'[ Копировать ]',
+    periodSummaryHeader:'сводка_за_период.log', fromLabel:'С', toLabel:'По', noEntries:'Нет записей за этот период.',
+    allEntriesHeader:'все_записи.db',
+    hint:'Данные хранятся локально на этом устройстве. Ничего не передаётся автоматически — кнопки лишь открывают Сообщения/Почту с готовым текстом, отправляешь сам.',
+    settingsHeader:'config.sys', themeLabel:'Стиль', languageLabel:'Язык', companyNameLabel:'Название компании-отправителя', bossPhoneLabel:'Номер телефона шефа', companyEmailLabel:'Почта компании (для дублирования)', saveBtn:'[ Сохранить и выйти ]',
+    mirrorMailBtn:'[ Продублировать на почту ]', purgeSentBtn:'[ Очистить отправленное ]',
+    copied:'Скопировано', saved:'Сохранено', mailSubject:'Часы за период', gpsBtn:'[ GPS ]',
+    locating:'Определяю местоположение...', locationError:'Ошибка геолокации', locationDenied:'Доступ запрещён'
+  },
+  uk: {
+    newEntryHeader:'новий_запис.sh', dateLabel:'Дата', addressLabel:'Адреса', addressPlaceholder:'напр. 1540 W Rosemont',
+    hoursLabel:'Години', executeBtn:'[ Виконати ]', todayLogHeader:'сьогодні.log', transmitBtn:'[ Передати ]', copyBtn:'[ Копіювати ]',
+    periodSummaryHeader:'підсумок_за_період.log', fromLabel:'Від', toLabel:'До', noEntries:'Немає записів за цей період.',
+    allEntriesHeader:'усі_записи.db',
+    hint:'Дані зберігаються локально на цьому пристрої. Нічого не надсилається автоматично — кнопки лише відкривають Повідомлення/Пошту з готовим текстом, надсилаєш сам.',
+    settingsHeader:'config.sys', themeLabel:'Стиль', languageLabel:'Мова', companyNameLabel:'Назва компанії-відправника', bossPhoneLabel:'Номер телефону боса', companyEmailLabel:'Пошта компанії (для дублювання)', saveBtn:'[ Зберегти і вийти ]',
+    mirrorMailBtn:'[ Продублювати на пошту ]', purgeSentBtn:'[ Очистити надіслане ]',
+    copied:'Скопійовано', saved:'Збережено', mailSubject:'Години за період', gpsBtn:'[ GPS ]',
+    locating:'Визначення місця...', locationError:'Помилка геолокації', locationDenied:'Доступ заборонено'
+  },
+  pl: {
+    newEntryHeader:'nowy_wpis.sh', dateLabel:'Data', addressLabel:'Adres', addressPlaceholder:'np. 1540 W Rosemont',
+    hoursLabel:'Godziny', executeBtn:'[ Wykonaj ]', todayLogHeader:'dzisiaj.log', transmitBtn:'[ Wyślij ]', copyBtn:'[ Kopiuj ]',
+    periodSummaryHeader:'podsumowanie_okresu.log', fromLabel:'Od', toLabel:'Do', noEntries:'Brak wpisów w tym okresie.',
+    allEntriesHeader:'wszystkie_wpisy.db',
+    hint:'Dane są przechowywane lokalnie na tym urządzeniu. Nic nie jest wysyłane automatycznie — przyciski tylko otwierają Wiadomości/Pocztę z gotowym tekstem, wysyłasz samodzielnie.',
+    settingsHeader:'config.sys', themeLabel:'Styl', languageLabel:'Język', companyNameLabel:'Nazwa firmy nadawcy', bossPhoneLabel:'Numer telefonu szefa', companyEmailLabel:'E-mail firmy (do duplikatu)', saveBtn:'[ Zapisz i wyjdź ]',
+    mirrorMailBtn:'[ Wyślij kopię e-mailem ]', purgeSentBtn:'[ Wyczyść wysłane ]',
+    copied:'Skopiowano', saved:'Zapisano', mailSubject:'Godziny za okres', gpsBtn:'[ GPS ]',
+    locating:'Ustalanie lokalizacji...', locationError:'Błąd lokalizacji', locationDenied:'Odmowa dostępu'
+  },
+  es: {
+    newEntryHeader:'nueva_entrada.sh', dateLabel:'Fecha', addressLabel:'Dirección', addressPlaceholder:'ej. 1540 W Rosemont',
+    hoursLabel:'Horas', executeBtn:'[ Ejecutar ]', todayLogHeader:'hoy.log', transmitBtn:'[ Transmitir ]', copyBtn:'[ Copiar ]',
+    periodSummaryHeader:'resumen_periodo.log', fromLabel:'Desde', toLabel:'Hasta', noEntries:'Sin registros en este período.',
+    allEntriesHeader:'todos_los_registros.db',
+    hint:'Los datos se guardan localmente en este dispositivo. Nada se envía automáticamente — los botones solo abren Mensajes/Correo con el texto listo, tú lo envías.',
+    settingsHeader:'config.sys', themeLabel:'Tema', languageLabel:'Idioma', companyNameLabel:'Nombre de la empresa remitente', bossPhoneLabel:'Número de teléfono del jefe', companyEmailLabel:'Correo de la empresa (para duplicado)', saveBtn:'[ Guardar y salir ]',
+    mirrorMailBtn:'[ Duplicar por correo ]', purgeSentBtn:'[ Borrar enviados ]',
+    copied:'Copiado', saved:'Guardado', mailSubject:'Horas del período', gpsBtn:'[ GPS ]',
+    locating:'Localizando...', locationError:'Error de ubicación', locationDenied:'Acceso denegado'
+  },
+  de: {
+    newEntryHeader:'neuer_eintrag.sh', dateLabel:'Datum', addressLabel:'Adresse', addressPlaceholder:'z.B. 1540 W Rosemont',
+    hoursLabel:'Stunden', executeBtn:'[ Ausführen ]', todayLogHeader:'heute.log', transmitBtn:'[ Senden ]', copyBtn:'[ Kopieren ]',
+    periodSummaryHeader:'zeitraum_uebersicht.log', fromLabel:'Von', toLabel:'Bis', noEntries:'Keine Einträge in diesem Zeitraum.',
+    allEntriesHeader:'alle_eintraege.db',
+    hint:'Daten werden lokal auf diesem Gerät gespeichert. Nichts wird automatisch gesendet — die Buttons öffnen nur Nachrichten/Mail mit fertigem Text, du sendest selbst.',
+    settingsHeader:'config.sys', themeLabel:'Design', languageLabel:'Sprache', companyNameLabel:'Name des Absenderunternehmens', bossPhoneLabel:'Telefonnummer des Chefs', companyEmailLabel:'Firmen-E-Mail (für Kopie)', saveBtn:'[ Speichern & Beenden ]',
+    mirrorMailBtn:'[ Per E-Mail duplizieren ]', purgeSentBtn:'[ Gesendete löschen ]',
+    copied:'Kopiert', saved:'Gespeichert', mailSubject:'Stunden für Zeitraum', gpsBtn:'[ GPS ]',
+    locating:'Standort wird ermittelt...', locationError:'Standortfehler', locationDenied:'Zugriff verweigert'
+  },
+  fr: {
+    newEntryHeader:'nouvelle_entree.sh', dateLabel:'Date', addressLabel:'Adresse', addressPlaceholder:'ex. 1540 W Rosemont',
+    hoursLabel:'Heures', executeBtn:'[ Exécuter ]', todayLogHeader:"aujourd'hui.log", transmitBtn:'[ Transmettre ]', copyBtn:'[ Copier ]',
+    periodSummaryHeader:'resume_periode.log', fromLabel:'Du', toLabel:'Au', noEntries:'Aucune entrée pour cette période.',
+    allEntriesHeader:'toutes_les_entrees.db',
+    hint:"Les données sont stockées localement sur cet appareil. Rien n'est envoyé automatiquement — les boutons ouvrent seulement Messages/Mail avec le texte prêt, tu envoies toi-même.",
+    settingsHeader:'config.sys', themeLabel:'Thème', languageLabel:'Langue', companyNameLabel:"Nom de la société expéditrice", bossPhoneLabel:'Numéro de téléphone du patron', companyEmailLabel:"E-mail de l'entreprise (pour duplication)", saveBtn:'[ Enregistrer et quitter ]',
+    mirrorMailBtn:'[ Dupliquer par e-mail ]', purgeSentBtn:'[ Effacer envoyés ]',
+    copied:'Copié', saved:'Enregistré', mailSubject:'Heures pour la période', gpsBtn:'[ GPS ]',
+    locating:'Localisation...', locationError:'Erreur de localisation', locationDenied:'Accès refusé'
+  }
+};
+
+let lang = localStorage.getItem(LANG_KEY) || 'en';
+const THEME_KEY = 'ht_theme_v1';
+let theme = localStorage.getItem(THEME_KEY) || 'hacker';
+function applyTheme(){
+  document.documentElement.setAttribute('data-theme', theme);
+  const sel = document.getElementById('setTheme');
+  if(sel) sel.value = theme;
+}
+function t(key){ return (I18N[lang] && I18N[lang][key]) || I18N.en[key] || key; }
+
+function applyLang(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    el.textContent = t(el.getAttribute('data-i18n'));
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+    el.setAttribute('placeholder', t(el.getAttribute('data-i18n-placeholder')));
+  });
+  const langSel = document.getElementById('setLang');
+  if(langSel) langSel.value = lang;
+  document.documentElement.setAttribute('lang', lang);
+}
 
 function pad(n){ return String(n).padStart(2,'0'); }
 function todayStr(){ const d=new Date(); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
@@ -212,9 +429,13 @@ function saveSettings(s){ localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
 let entries = loadEntries();
 let settings = loadSettings();
 
+function escapeHtml(str){
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
 function buildDailyMessage(date, addrMap){
-  const lines = [...addrMap.entries()].map(([addr,hrs]) => `${addr} - ${hrs}h`);
-  return `${toMMDDYYYY(date)}\n${lines.join('\n')}`;
+  const lines = [...addrMap.entries()].map(([addr,hrs]) => `${escapeHtml(addr)} - ${hrs}h`);
+  return `<span class="date-gold">${toMMDDYYYY(date)}</span>\n${lines.join('\n')}`;
 }
 
 function buildSummary(list){
@@ -234,7 +455,7 @@ function buildSummary(list){
   for(const [date, addrMap] of byDate){
     if(addrMap.size > 1){
       // multiple job sites same day: date printed once, addresses listed below
-      const lines = [...addrMap.entries()].map(([addr,hrs]) => `${addr} - ${hrs}h`);
+      const lines = [...addrMap.entries()].map(([addr,hrs]) => `${escapeHtml(addr)} - ${hrs}h`);
       const total = [...addrMap.values()].reduce((s,h)=>s+h,0);
       blocks.push({ earliest: date, dateLine: toMMDDYYYY(date), lines, total });
     } else {
@@ -259,14 +480,20 @@ function buildSummary(list){
     const runLabels = runs.map(r => r.length===1 ? toMMDD(r[0]) : `${toMMDD(r[0])} - ${toMMDD(r[r.length-1])}`);
     const year = items[items.length-1].date.split('-')[0];
     const dateLine = runLabels.join('; ') + '.' + year;
-    blocks.push({ earliest, dateLine, lines: [`${address} - ${totalHours}h`], total: totalHours });
+    blocks.push({ earliest, dateLine, lines: [`${escapeHtml(address)} - ${totalHours}h`], total: totalHours });
   }
 
   blocks.sort((a,b)=> a.earliest<b.earliest?-1:1);
-  const lines = blocks.map(b => `${b.dateLine}\n${b.lines.join('\n')}`);
+  const lines = blocks.map(b => `<span class="date-gold">${b.dateLine}</span>\n${b.lines.join('\n')}`);
   const grandTotal = blocks.reduce((s,b)=>s+b.total,0);
   lines.push(`Total: ${grandTotal} hours`);
   return lines.join('\n');
+}
+
+function stripHtml(html){
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || '';
 }
 
 function showToast(msg){
@@ -279,11 +506,11 @@ function showToast(msg){
 async function copyText(text){
   try{
     await navigator.clipboard.writeText(text);
-    showToast('Copied');
+    showToast(t('copied'));
   }catch(e){
     const ta=document.createElement('textarea');
     ta.value=text; document.body.appendChild(ta); ta.select();
-    try{ document.execCommand('copy'); showToast('Copied'); }catch(err){}
+    try{ document.execCommand('copy'); showToast(t('copied')); }catch(err){}
     document.body.removeChild(ta);
   }
 }
@@ -313,7 +540,7 @@ function render(){
       addrMap.set(e.address, (addrMap.get(e.address)||0) + Number(e.hours));
     }
     dailySection.style.display='';
-    document.getElementById('dailyPreview').textContent = buildDailyMessage(lastDate, addrMap);
+    document.getElementById('dailyPreview').innerHTML = buildDailyMessage(lastDate, addrMap);
   } else {
     dailySection.style.display='none';
   }
@@ -327,17 +554,17 @@ function render(){
     box.innerHTML = `
       <pre class="preview preview-clamp">${summary}</pre>
       <div class="btn-row">
-        <button class="btn btn-soft" id="sendSummarySms">[ Transmit ]</button>
-        <button class="btn btn-soft" id="sendSummaryMail">[ Mirror to Email ]</button>
+        <button class="btn btn-soft" id="sendSummarySms">${t('transmitBtn')}</button>
+        <button class="btn btn-soft" id="sendSummaryMail">${t('mirrorMailBtn')}</button>
       </div>
       <div class="btn-row">
-        <button class="btn btn-ghost" id="copySummary">[ Copy ]</button>
-        <button class="btn btn-ghost" id="clearPeriod">[ Purge Sent ]</button>
+        <button class="btn btn-ghost" id="copySummary">${t('copyBtn')}</button>
+        <button class="btn btn-ghost" id="clearPeriod">${t('purgeSentBtn')}</button>
       </div>
     `;
-    document.getElementById('sendSummarySms').onclick = ()=> openSms(summary);
-    document.getElementById('sendSummaryMail').onclick = ()=> openMail('Hours for period '+toMMDDYYYY(rs)+' - '+toMMDDYYYY(re), summary);
-    document.getElementById('copySummary').onclick = ()=> copyText(summary);
+    document.getElementById('sendSummarySms').onclick = ()=> openSms(stripHtml(summary));
+    document.getElementById('sendSummaryMail').onclick = ()=> openMail(t('mailSubject')+' '+toMMDDYYYY(rs)+' - '+toMMDDYYYY(re), stripHtml(summary));
+    document.getElementById('copySummary').onclick = ()=> copyText(stripHtml(summary));
     document.getElementById('clearPeriod').onclick = ()=>{
       const ids = new Set(period.map(e=>e.id));
       entries = entries.filter(e=>!ids.has(e.id));
@@ -345,7 +572,7 @@ function render(){
       render();
     };
   } else {
-    box.innerHTML = '<p class="empty">No entries in this period.</p>';
+    box.innerHTML = `<p class="empty">${t('noEntries')}</p>`;
   }
 
   const listSection = document.getElementById('listSection');
@@ -376,6 +603,9 @@ document.getElementById('rangeStart').value = addDays(todayStr(), -13);
 document.getElementById('rangeEnd').value = todayStr();
 document.getElementById('setPhone').value = settings.phone || '';
 document.getElementById('setEmail').value = settings.email || '';
+document.getElementById('setCompanyName').value = settings.companyName || 'Fallen Horizon LLC';
+document.getElementById('headerCompany').textContent = (settings.companyName || 'Fallen Horizon LLC').toLowerCase().replace(/\s+/g,'_') + ' // secure_shell';
+document.getElementById('setTheme').value = theme;
 
 document.getElementById('addBtn').onclick = ()=>{
   const date = document.getElementById('inDate').value;
@@ -400,11 +630,56 @@ document.getElementById('settingsModal').onclick = (e)=>{ if(e.target.id==='sett
 document.getElementById('saveSettings').onclick = ()=>{
   settings.phone = document.getElementById('setPhone').value.trim();
   settings.email = document.getElementById('setEmail').value.trim();
+  settings.companyName = document.getElementById('setCompanyName').value.trim() || 'Fallen Horizon LLC';
   saveSettings(settings);
+  document.getElementById('headerCompany').textContent = settings.companyName.toLowerCase().replace(/\s+/g,'_') + ' // secure_shell';
+  const newTheme = document.getElementById('setTheme').value;
+  if(newTheme !== theme){
+    theme = newTheme;
+    localStorage.setItem(THEME_KEY, theme);
+    applyTheme();
+  }
+  const newLang = document.getElementById('setLang').value;
+  if(newLang !== lang){
+    lang = newLang;
+    localStorage.setItem(LANG_KEY, lang);
+    applyLang();
+    render();
+  }
   document.getElementById('settingsModal').classList.remove('show');
-  showToast('Saved');
+  showToast(t('saved'));
 };
 
+document.getElementById('gpsBtn').onclick = ()=>{
+  if(!navigator.geolocation){ showToast(t('locationError')); return; }
+  showToast(t('locating'));
+  navigator.geolocation.getCurrentPosition(async (pos)=>{
+    const { latitude, longitude } = pos.coords;
+    try{
+      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`, {
+        headers: { 'Accept-Language': lang }
+      });
+      const data = await res.json();
+      const a = data.address || {};
+      const houseNumber = a.house_number || '';
+      const road = a.road || a.pedestrian || a.street || a.footway || '';
+      const short = [houseNumber, road].filter(Boolean).join(' ') || data.display_name || '';
+      if(short){
+        document.getElementById('inAddress').value = short;
+        showToast(t('saved'));
+      } else {
+        showToast(t('locationError'));
+      }
+    }catch(e){
+      showToast(t('locationError'));
+    }
+  }, ()=>{
+    showToast(t('locationDenied'));
+  }, { enableHighAccuracy:true, timeout:12000 });
+};
+
+applyTheme();
+applyLang();
 render();
 </script>
 </body>
