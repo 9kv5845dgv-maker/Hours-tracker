@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230b0d10'/%3E%3Cpath d='M55 15 L30 55 H48 L42 85 L70 42 H52 Z' fill='%232b6cee'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Baloo+2:wght@500;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#000000; --panel:#050805; --panel2:#020402; --line:rgba(0,255,65,.25);
@@ -79,6 +79,7 @@
     line-height:1.6; margin:0 0 4px; color:var(--text); text-shadow:0 0 4px rgba(0,255,65,.4);}
   pre.preview::before{content:"root@fallen-horizon:~$ cat message.txt\A"; opacity:.4; white-space:pre;}
   pre.preview-clamp{ max-height:112px; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+  #reportModal pre.preview-clamp{ max-height:calc(100vh - 300px); }
 
   .empty{font-size:12px; color:var(--dim2); padding:6px 2px;}
   .empty::before{content:"[ NO DATA ] ";}
@@ -100,6 +101,8 @@
 
   .modal-bg{position:fixed; inset:0; background:rgba(0,0,0,.85); display:none; align-items:flex-end; z-index:40;}
   .modal-bg.show{display:flex;}
+  .modal-bg-full{ align-items:stretch; }
+  .modal-full{ width:100%; border-radius:0; padding-top:calc(20px + env(safe-area-inset-top)); overflow-y:auto; }
   .modal{background:var(--panel); width:100%; border-radius:0; padding:20px 16px calc(24px + env(safe-area-inset-bottom));
     border-top:1px solid var(--text); box-shadow:0 0 20px rgba(0,255,65,.3);}
   .modal h3{margin:0 0 14px; font-size:14px; text-transform:uppercase; letter-spacing:.05em;}
@@ -155,49 +158,47 @@
   html[data-theme="macos"] select#setTheme, html[data-theme="macos"] select#setLang{
     background:#f5f5f7 !important; border:1px solid rgba(0,0,0,.08) !important; color:#1d1d1f !important; }
 
-  /* ================= THEME: FUN & COLORFUL ================= */
-  html[data-theme="fun"] body{ background:linear-gradient(160deg,#ffe0f5,#e5d9ff 45%,#d3f3ff); background-image:linear-gradient(160deg,#ffe0f5,#e5d9ff 45%,#d3f3ff); }
-  html[data-theme="fun"] *{ font-family:'Baloo 2','Quicksand',system-ui,sans-serif !important; }
-  html[data-theme="fun"] .cursor{ display:none; }
-  html[data-theme="fun"] h1{ text-shadow:none; text-transform:none; letter-spacing:normal; font-weight:800;
-    background:linear-gradient(90deg,#ff6fb5,#a855f7); -webkit-background-clip:text; background-clip:text; color:transparent; }
-  html[data-theme="fun"] .sub{ color:#a855f7; font-weight:600; }
-  html[data-theme="fun"] .logo{ background:linear-gradient(135deg,#ff9ecb,#a78bfa); border:none; border-radius:14px;
-    box-shadow:0 4px 14px rgba(168,85,247,.4); }
-  html[data-theme="fun"] .logo svg{ filter:none; }
-  html[data-theme="fun"] .gear{ background:#fff; border:2px solid #ffd6ef; border-radius:14px; box-shadow:0 3px 0 #ffd6ef; }
-  html[data-theme="fun"] .gear svg{ color:#c454a0; filter:none; }
-  html[data-theme="fun"] section{ background:#fff; border:2px solid #ffe3f5; border-radius:24px;
-    box-shadow:0 6px 0 #ffe3f5, 0 8px 20px rgba(168,85,247,.15); }
-  html[data-theme="fun"] h2{ color:#a855f7; text-transform:none; letter-spacing:normal; border-bottom:2px dashed #ffd6ef; font-weight:700; }
-  html[data-theme="fun"] h2::before{ content:none; }
-  html[data-theme="fun"] label{ color:#c454a0; text-transform:none; font-weight:600; }
-  html[data-theme="fun"] label::before{ content:none; }
-  html[data-theme="fun"] input[type=text], html[data-theme="fun"] input[type=number], html[data-theme="fun"] input[type=date],
-  html[data-theme="fun"] input[type=tel], html[data-theme="fun"] input[type=email]{
-    background:#fff7fc; border:2px solid #ffd6ef; color:#7c3aed; border-radius:16px; caret-color:#ff6fb5; }
-  html[data-theme="fun"] input:focus{ border-color:#ff6fb5; animation:none; box-shadow:0 0 0 4px rgba(255,111,181,.25); }
-  html[data-theme="fun"] input::placeholder{ color:#e0b3d8; }
-  html[data-theme="fun"] .btn{ border-radius:16px; text-transform:none; letter-spacing:normal; font-weight:700; border:none; }
-  html[data-theme="fun"] .btn-primary{ background:linear-gradient(135deg,#ff9ecb,#a78bfa); color:#fff; box-shadow:0 4px 0 #d896e8; }
-  html[data-theme="fun"] .btn-primary:active{ box-shadow:0 1px 0 #d896e8; transform:translateY(3px); }
-  html[data-theme="fun"] .btn-ghost{ background:#fff7fc; border:2px solid #ffd6ef; color:#a855f7; }
-  html[data-theme="fun"] .btn-soft{ background:#ffe3f5; color:#c454a0; }
-  html[data-theme="fun"] pre.preview{ background:#fff7fc; border:2px solid #ffe3f5; color:#7c3aed; text-shadow:none; border-radius:16px; }
-  html[data-theme="fun"] pre.preview::before{ content:none; }
-  html[data-theme="fun"] .date-gold{ color:#ff9a3c; text-shadow:none; font-weight:800; }
-  html[data-theme="fun"] .entry{ background:#fff; border:2px solid #ffe3f5; border-radius:16px; }
-  html[data-theme="fun"] .entry .date{ color:#ff9a3c; }
-  html[data-theme="fun"] .empty::before{ content:none; }
-  html[data-theme="fun"] .hint::before{ content:none; }
-  html[data-theme="fun"] .hint{ color:#c9a3dd; }
-  html[data-theme="fun"] .toast{ background:linear-gradient(135deg,#ff9ecb,#a78bfa); border:none; color:#fff;
-    box-shadow:0 4px 16px rgba(168,85,247,.4); text-transform:none; letter-spacing:normal; font-weight:700; border-radius:100px; }
-  html[data-theme="fun"] .modal{ background:#fff; border-top:none; border-radius:28px 28px 0 0; box-shadow:0 -4px 24px rgba(168,85,247,.25); }
-  html[data-theme="fun"] .modal h3{ color:#a855f7; text-transform:none; letter-spacing:normal; }
-  html[data-theme="fun"] .modal h3::before{ content:none; }
-  html[data-theme="fun"] select#setTheme, html[data-theme="fun"] select#setLang{
-    background:#fff7fc !important; border:2px solid #ffd6ef !important; color:#7c3aed !important; border-radius:12px !important; }
+  /* ================= THEME: ANDROID (Material Design) ================= */
+  html[data-theme="android"] body{ background:#f4eff7; background-image:none; }
+  html[data-theme="android"] *{ font-family:'Roboto',system-ui,sans-serif !important; }
+  html[data-theme="android"] .cursor{ display:none; }
+  html[data-theme="android"] h1{ text-shadow:none; text-transform:none; letter-spacing:normal; font-weight:500; color:#1d1b20; }
+  html[data-theme="android"] .sub{ color:#6750a4; font-weight:500; }
+  html[data-theme="android"] .logo{ background:#6750a4; border:none; border-radius:16px; box-shadow:0 1px 3px rgba(0,0,0,.2), 0 1px 2px rgba(0,0,0,.12); }
+  html[data-theme="android"] .logo svg{ filter:none; }
+  html[data-theme="android"] .gear{ background:#e8def8; border:none; border-radius:50%; box-shadow:none; }
+  html[data-theme="android"] .gear svg{ color:#4a4458; filter:none; }
+  html[data-theme="android"] section{ background:#fffbfe; border:1px solid #e7e0ec; border-radius:20px;
+    box-shadow:0 1px 2px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.1); }
+  html[data-theme="android"] h2{ color:#6750a4; text-transform:none; letter-spacing:normal; border-bottom:1px solid #e7e0ec; font-weight:500; }
+  html[data-theme="android"] h2::before{ content:none; }
+  html[data-theme="android"] label{ color:#49454f; text-transform:none; font-weight:500; }
+  html[data-theme="android"] label::before{ content:none; }
+  html[data-theme="android"] input[type=text], html[data-theme="android"] input[type=number], html[data-theme="android"] input[type=date],
+  html[data-theme="android"] input[type=tel], html[data-theme="android"] input[type=email], html[data-theme="android"] textarea{
+    background:#f4eff7; border:1px solid #79747e; color:#1d1b20; border-radius:8px; caret-color:#6750a4; }
+  html[data-theme="android"] input:focus, html[data-theme="android"] textarea:focus{ border:2px solid #6750a4; animation:none; box-shadow:none; }
+  html[data-theme="android"] input::placeholder, html[data-theme="android"] textarea::placeholder{ color:#79747e; }
+  html[data-theme="android"] .btn{ border-radius:20px; text-transform:none; letter-spacing:.01em; font-weight:500; border:none; }
+  html[data-theme="android"] .btn-primary{ background:#6750a4; color:#fff; box-shadow:0 1px 3px rgba(0,0,0,.2), 0 1px 2px rgba(0,0,0,.12); }
+  html[data-theme="android"] .btn-primary:active{ background:#563d8f; }
+  html[data-theme="android"] .btn-ghost{ background:transparent; border:1px solid #79747e; color:#6750a4; }
+  html[data-theme="android"] .btn-soft{ background:#e8def8; color:#4a2c85; }
+  html[data-theme="android"] pre.preview{ background:#f4eff7; border:1px solid #e7e0ec; color:#1d1b20; text-shadow:none; border-radius:12px; }
+  html[data-theme="android"] pre.preview::before{ content:none; }
+  html[data-theme="android"] .date-gold{ color:#7d5260; text-shadow:none; font-weight:700; }
+  html[data-theme="android"] .entry{ background:#fffbfe; border:1px solid #e7e0ec; border-radius:12px; }
+  html[data-theme="android"] .entry .date{ color:#7d5260; }
+  html[data-theme="android"] .empty::before{ content:none; }
+  html[data-theme="android"] .hint::before{ content:none; }
+  html[data-theme="android"] .hint{ color:#79747e; }
+  html[data-theme="android"] .toast{ background:#313033; border:none; color:#fff;
+    box-shadow:0 3px 5px rgba(0,0,0,.2); text-transform:none; letter-spacing:normal; font-weight:500; border-radius:8px; }
+  html[data-theme="android"] .modal{ background:#fffbfe; border-top:none; border-radius:28px 28px 0 0; box-shadow:0 -1px 3px rgba(0,0,0,.15); }
+  html[data-theme="android"] .modal h3{ color:#1d1b20; text-transform:none; letter-spacing:normal; font-weight:500; }
+  html[data-theme="android"] .modal h3::before{ content:none; }
+  html[data-theme="android"] select#setTheme, html[data-theme="android"] select#setLang{
+    background:#f4eff7 !important; border:1px solid #79747e !important; color:#1d1b20 !important; border-radius:8px !important; }
 </style>
 </head>
 <body>
@@ -208,6 +209,10 @@
     <div>
       <h1>Hours_Tracker<span class="cursor"></span></h1>
       <p class="sub" id="headerCompany">fallen_horizon_llc // secure_shell</p>
+    </div>
+    <div class="gear" id="openReport" style="margin-left:auto; width:68px; border-radius:2px; gap:4px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px;"><path d="M9 17V9M15 17V5M4 17V13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span data-i18n="reportBtnLabel" style="font-size:10px; text-transform:uppercase; letter-spacing:.05em; font-weight:700;">Report</span>
     </div>
     <div class="gear" id="openSettings">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.34 1.87l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.7 1.7 0 00-1.87-.34 1.7 1.7 0 00-1 1.55V21a2 2 0 01-4 0v-.09A1.7 1.7 0 009 19.4a1.7 1.7 0 00-1.87.34l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.7 1.7 0 004.6 15a1.7 1.7 0 00-1.55-1H3a2 2 0 010-4h.09A1.7 1.7 0 004.6 9a1.7 1.7 0 00-.34-1.87l-.06-.06a2 2 0 112.83-2.83l.06.06A1.7 1.7 0 009 4.6a1.7 1.7 0 001-1.55V3a2 2 0 014 0v.09a1.7 1.7 0 001 1.55 1.7 1.7 0 001.87-.34l.06-.06a2 2 0 112.83 2.83l-.06.06A1.7 1.7 0 0019.4 9a1.7 1.7 0 001.55 1H21a2 2 0 010 4h-.09a1.7 1.7 0 00-1.55 1z"/></svg>
@@ -247,17 +252,6 @@
     </div>
   </section>
 
-  <section>
-    <h2 data-i18n="periodSummaryHeader">period_summary.log</h2>
-    <div class="row">
-      <div><label data-i18n="fromLabel">From</label><input type="date" id="rangeStart"></div>
-      <div><label data-i18n="toLabel">To</label><input type="date" id="rangeEnd"></div>
-    </div>
-    <div id="summaryBox">
-      <p class="empty" data-i18n="noEntries">No entries in this period.</p>
-    </div>
-  </section>
-
   <section id="listSection" style="display:none">
     <h2 data-i18n="allEntriesHeader">all_entries.db</h2>
     <div id="entriesList"></div>
@@ -277,7 +271,7 @@
       <select id="setTheme" style="width:100%; background:#020402; border:1px solid rgba(0,255,65,.25); color:#00ff41; border-radius:2px; padding:10px 12px; font-size:15px; font-family:inherit;">
         <option value="hacker">Terminal</option>
         <option value="macos">macOS</option>
-        <option value="fun">Fun &amp; Colorful</option>
+        <option value="android">Android OS</option>
       </select>
     </div>
     <div class="field">
@@ -308,6 +302,24 @@
   </div>
 </div>
 
+<div class="modal-bg modal-bg-full" id="reportModal">
+  <div class="modal modal-full">
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+      <h3 data-i18n="periodSummaryHeader" style="margin:0;">period_summary.log</h3>
+      <button type="button" id="closeReport" class="gear" style="flex-shrink:0;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="row">
+      <div><label data-i18n="fromLabel">From</label><input type="date" id="rangeStart"></div>
+      <div><label data-i18n="toLabel">To</label><input type="date" id="rangeEnd"></div>
+    </div>
+    <div id="summaryBox">
+      <p class="empty" data-i18n="noEntries">No entries in this period.</p>
+    </div>
+  </div>
+</div>
+
 <script>
 const STORAGE_KEY = 'ht_entries_v1';
 const SETTINGS_KEY = 'ht_settings_v1';
@@ -320,7 +332,7 @@ const I18N = {
     periodSummaryHeader:'period_summary.log', fromLabel:'From', toLabel:'To', noEntries:'No entries in this period.',
     allEntriesHeader:'all_entries.db',
     hint:'Data stored locally on this device. Nothing transmitted automatically — send actions only open Messages / Mail with the payload ready, you execute the send.',
-    settingsHeader:'config.sys', themeLabel:'Theme', languageLabel:'Language', companyNameLabel:'Sender company name', bossPhoneLabel:"Report phone number (Recipient)", companyEmailLabel:'Company email (for duplicate copy)', saveBtn:'[ Save & Exit ]',
+    reportBtnLabel:'Report', settingsHeader:'config.sys', themeLabel:'Theme', languageLabel:'Language', companyNameLabel:'Sender company name', bossPhoneLabel:"Report phone number (Recipient)", companyEmailLabel:'Company email (for duplicate copy)', saveBtn:'[ Save & Exit ]',
     mirrorMailBtn:'[ Mirror to Email ]', purgeSentBtn:'[ Purge Sent ]',
     copied:'Copied', saved:'Saved', mailSubject:'Hours for period', gpsBtn:'[ GPS ]',
     locating:'Locating...', locationError:'Location error', locationDenied:'Access denied'
@@ -331,7 +343,7 @@ const I18N = {
     periodSummaryHeader:'сводка_за_период.log', fromLabel:'С', toLabel:'По', noEntries:'Нет записей за этот период.',
     allEntriesHeader:'все_записи.db',
     hint:'Данные хранятся локально на этом устройстве. Ничего не передаётся автоматически — кнопки лишь открывают Сообщения/Почту с готовым текстом, отправляешь сам.',
-    settingsHeader:'config.sys', themeLabel:'Стиль', languageLabel:'Язык', companyNameLabel:'Название компании-отправителя', bossPhoneLabel:'Номер телефона для отчёта (получатель)', companyEmailLabel:'Почта компании (для дублирования)', saveBtn:'[ Сохранить и выйти ]',
+    reportBtnLabel:'Отчёт', settingsHeader:'config.sys', themeLabel:'Стиль', languageLabel:'Язык', companyNameLabel:'Название компании-отправителя', bossPhoneLabel:'Номер телефона для отчёта (получатель)', companyEmailLabel:'Почта компании (для дублирования)', saveBtn:'[ Сохранить и выйти ]',
     mirrorMailBtn:'[ Продублировать на почту ]', purgeSentBtn:'[ Очистить отправленное ]',
     copied:'Скопировано', saved:'Сохранено', mailSubject:'Часы за период', gpsBtn:'[ GPS ]',
     locating:'Определяю местоположение...', locationError:'Ошибка геолокации', locationDenied:'Доступ запрещён'
@@ -342,7 +354,7 @@ const I18N = {
     periodSummaryHeader:'підсумок_за_період.log', fromLabel:'Від', toLabel:'До', noEntries:'Немає записів за цей період.',
     allEntriesHeader:'усі_записи.db',
     hint:'Дані зберігаються локально на цьому пристрої. Нічого не надсилається автоматично — кнопки лише відкривають Повідомлення/Пошту з готовим текстом, надсилаєш сам.',
-    settingsHeader:'config.sys', themeLabel:'Стиль', languageLabel:'Мова', companyNameLabel:'Назва компанії-відправника', bossPhoneLabel:'Номер телефону для звіту (одержувач)', companyEmailLabel:'Пошта компанії (для дублювання)', saveBtn:'[ Зберегти і вийти ]',
+    reportBtnLabel:'Звіт', settingsHeader:'config.sys', themeLabel:'Стиль', languageLabel:'Мова', companyNameLabel:'Назва компанії-відправника', bossPhoneLabel:'Номер телефону для звіту (одержувач)', companyEmailLabel:'Пошта компанії (для дублювання)', saveBtn:'[ Зберегти і вийти ]',
     mirrorMailBtn:'[ Продублювати на пошту ]', purgeSentBtn:'[ Очистити надіслане ]',
     copied:'Скопійовано', saved:'Збережено', mailSubject:'Години за період', gpsBtn:'[ GPS ]',
     locating:'Визначення місця...', locationError:'Помилка геолокації', locationDenied:'Доступ заборонено'
@@ -353,7 +365,7 @@ const I18N = {
     periodSummaryHeader:'podsumowanie_okresu.log', fromLabel:'Od', toLabel:'Do', noEntries:'Brak wpisów w tym okresie.',
     allEntriesHeader:'wszystkie_wpisy.db',
     hint:'Dane są przechowywane lokalnie na tym urządzeniu. Nic nie jest wysyłane automatycznie — przyciski tylko otwierają Wiadomości/Pocztę z gotowym tekstem, wysyłasz samodzielnie.',
-    settingsHeader:'config.sys', themeLabel:'Styl', languageLabel:'Język', companyNameLabel:'Nazwa firmy nadawcy', bossPhoneLabel:'Numer telefonu do raportu (odbiorca)', companyEmailLabel:'E-mail firmy (do duplikatu)', saveBtn:'[ Zapisz i wyjdź ]',
+    reportBtnLabel:'Raport', settingsHeader:'config.sys', themeLabel:'Styl', languageLabel:'Język', companyNameLabel:'Nazwa firmy nadawcy', bossPhoneLabel:'Numer telefonu do raportu (odbiorca)', companyEmailLabel:'E-mail firmy (do duplikatu)', saveBtn:'[ Zapisz i wyjdź ]',
     mirrorMailBtn:'[ Wyślij kopię e-mailem ]', purgeSentBtn:'[ Wyczyść wysłane ]',
     copied:'Skopiowano', saved:'Zapisano', mailSubject:'Godziny za okres', gpsBtn:'[ GPS ]',
     locating:'Ustalanie lokalizacji...', locationError:'Błąd lokalizacji', locationDenied:'Odmowa dostępu'
@@ -364,7 +376,7 @@ const I18N = {
     periodSummaryHeader:'resumen_periodo.log', fromLabel:'Desde', toLabel:'Hasta', noEntries:'Sin registros en este período.',
     allEntriesHeader:'todos_los_registros.db',
     hint:'Los datos se guardan localmente en este dispositivo. Nada se envía automáticamente — los botones solo abren Mensajes/Correo con el texto listo, tú lo envías.',
-    settingsHeader:'config.sys', themeLabel:'Tema', languageLabel:'Idioma', companyNameLabel:'Nombre de la empresa remitente', bossPhoneLabel:'Número de teléfono del informe (destinatario)', companyEmailLabel:'Correo de la empresa (para duplicado)', saveBtn:'[ Guardar y salir ]',
+    reportBtnLabel:'Informe', settingsHeader:'config.sys', themeLabel:'Tema', languageLabel:'Idioma', companyNameLabel:'Nombre de la empresa remitente', bossPhoneLabel:'Número de teléfono del informe (destinatario)', companyEmailLabel:'Correo de la empresa (para duplicado)', saveBtn:'[ Guardar y salir ]',
     mirrorMailBtn:'[ Duplicar por correo ]', purgeSentBtn:'[ Borrar enviados ]',
     copied:'Copiado', saved:'Guardado', mailSubject:'Horas del período', gpsBtn:'[ GPS ]',
     locating:'Localizando...', locationError:'Error de ubicación', locationDenied:'Acceso denegado'
@@ -375,7 +387,7 @@ const I18N = {
     periodSummaryHeader:'zeitraum_uebersicht.log', fromLabel:'Von', toLabel:'Bis', noEntries:'Keine Einträge in diesem Zeitraum.',
     allEntriesHeader:'alle_eintraege.db',
     hint:'Daten werden lokal auf diesem Gerät gespeichert. Nichts wird automatisch gesendet — die Buttons öffnen nur Nachrichten/Mail mit fertigem Text, du sendest selbst.',
-    settingsHeader:'config.sys', themeLabel:'Design', languageLabel:'Sprache', companyNameLabel:'Name des Absenderunternehmens', bossPhoneLabel:'Telefonnummer für den Bericht (Empfänger)', companyEmailLabel:'Firmen-E-Mail (für Kopie)', saveBtn:'[ Speichern & Beenden ]',
+    reportBtnLabel:'Bericht', settingsHeader:'config.sys', themeLabel:'Design', languageLabel:'Sprache', companyNameLabel:'Name des Absenderunternehmens', bossPhoneLabel:'Telefonnummer für den Bericht (Empfänger)', companyEmailLabel:'Firmen-E-Mail (für Kopie)', saveBtn:'[ Speichern & Beenden ]',
     mirrorMailBtn:'[ Per E-Mail duplizieren ]', purgeSentBtn:'[ Gesendete löschen ]',
     copied:'Kopiert', saved:'Gespeichert', mailSubject:'Stunden für Zeitraum', gpsBtn:'[ GPS ]',
     locating:'Standort wird ermittelt...', locationError:'Standortfehler', locationDenied:'Zugriff verweigert'
@@ -386,7 +398,7 @@ const I18N = {
     periodSummaryHeader:'resume_periode.log', fromLabel:'Du', toLabel:'Au', noEntries:'Aucune entrée pour cette période.',
     allEntriesHeader:'toutes_les_entrees.db',
     hint:"Les données sont stockées localement sur cet appareil. Rien n'est envoyé automatiquement — les boutons ouvrent seulement Messages/Mail avec le texte prêt, tu envoies toi-même.",
-    settingsHeader:'config.sys', themeLabel:'Thème', languageLabel:'Langue', companyNameLabel:"Nom de la société expéditrice", bossPhoneLabel:'Numéro de téléphone du rapport (destinataire)', companyEmailLabel:"E-mail de l'entreprise (pour duplication)", saveBtn:'[ Enregistrer et quitter ]',
+    reportBtnLabel:'Rapport', settingsHeader:'config.sys', themeLabel:'Thème', languageLabel:'Langue', companyNameLabel:"Nom de la société expéditrice", bossPhoneLabel:'Numéro de téléphone du rapport (destinataire)', companyEmailLabel:"E-mail de l'entreprise (pour duplication)", saveBtn:'[ Enregistrer et quitter ]',
     mirrorMailBtn:'[ Dupliquer par e-mail ]', purgeSentBtn:'[ Effacer envoyés ]',
     copied:'Copié', saved:'Enregistré', mailSubject:'Heures pour la période', gpsBtn:'[ GPS ]',
     locating:'Localisation...', locationError:'Erreur de localisation', locationDenied:'Accès refusé'
@@ -530,17 +542,20 @@ function openMail(subject, body){
 }
 
 function render(){
-  const sorted = [...entries].sort((a,b)=> a.date<b.date?1:-1);
-  const lastDate = sorted[0] ? sorted[0].date : null;
+  const selectedDate = document.getElementById('inDate').value;
   const dailySection = document.getElementById('dailySection');
-  if(lastDate){
+  if(selectedDate){
     const addrMap = new Map();
     for(const e of entries){
-      if(e.date !== lastDate) continue;
+      if(e.date !== selectedDate) continue;
       addrMap.set(e.address, (addrMap.get(e.address)||0) + Number(e.hours));
     }
-    dailySection.style.display='';
-    document.getElementById('dailyPreview').innerHTML = buildDailyMessage(lastDate, addrMap);
+    if(addrMap.size > 0){
+      dailySection.style.display='';
+      document.getElementById('dailyPreview').innerHTML = buildDailyMessage(selectedDate, addrMap);
+    } else {
+      dailySection.style.display='none';
+    }
   } else {
     dailySection.style.display='none';
   }
@@ -624,9 +639,12 @@ document.getElementById('sendDailySms').onclick = ()=> openSms(document.getEleme
 
 document.getElementById('rangeStart').onchange = render;
 document.getElementById('rangeEnd').onchange = render;
+document.getElementById('inDate').onchange = render;
 
 document.getElementById('openSettings').onclick = ()=> document.getElementById('settingsModal').classList.add('show');
 document.getElementById('settingsModal').onclick = (e)=>{ if(e.target.id==='settingsModal') e.currentTarget.classList.remove('show'); };
+document.getElementById('openReport').onclick = ()=> document.getElementById('reportModal').classList.add('show');
+document.getElementById('closeReport').onclick = ()=> document.getElementById('reportModal').classList.remove('show');
 document.getElementById('saveSettings').onclick = ()=>{
   settings.phone = document.getElementById('setPhone').value.trim();
   settings.email = document.getElementById('setEmail').value.trim();
