@@ -105,6 +105,7 @@
   .modal-full{ width:100%; border-radius:0; padding-top:calc(20px + env(safe-area-inset-top)); overflow-y:auto; }
   .modal{background:var(--panel); width:100%; border-radius:0; padding:20px 16px calc(24px + env(safe-area-inset-bottom));
     border-top:1px solid var(--text); box-shadow:0 0 20px rgba(0,255,65,.3);}
+  .modal-full{ padding-top:calc(28px + env(safe-area-inset-top)) !important; }
   .modal h3{margin:0 0 14px; font-size:14px; text-transform:uppercase; letter-spacing:.05em;}
   .modal h3::before{content:"> ";}
   .modal .close{width:100%; margin-top:14px;}
@@ -127,6 +128,7 @@
   html[data-theme="macos"] .logo svg{ filter:none; }
   html[data-theme="macos"] .gear{ background:#fff; border:1px solid rgba(0,0,0,.08); box-shadow:0 1px 3px rgba(0,0,0,.08); border-radius:10px; }
   html[data-theme="macos"] .gear svg{ color:rgba(0,0,0,.5); filter:none; }
+  html[data-theme="macos"] #openReport{ color:rgba(0,0,0,.55); border-radius:10px; }
   html[data-theme="macos"] section{ background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:16px;
     box-shadow:0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04); }
   html[data-theme="macos"] h2{ color:#1d1d1f; border-bottom:1px solid rgba(0,0,0,.06); text-transform:none; letter-spacing:normal; font-weight:600; }
@@ -168,6 +170,7 @@
   html[data-theme="android"] .logo svg{ filter:none; }
   html[data-theme="android"] .gear{ background:#e8def8; border:none; border-radius:50%; box-shadow:none; }
   html[data-theme="android"] .gear svg{ color:#4a4458; filter:none; }
+  html[data-theme="android"] #openReport{ color:#4a4458; border-radius:20px; }
   html[data-theme="android"] section{ background:#fffbfe; border:1px solid #e7e0ec; border-radius:20px;
     box-shadow:0 1px 2px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.1); }
   html[data-theme="android"] h2{ color:#6750a4; text-transform:none; letter-spacing:normal; border-bottom:1px solid #e7e0ec; font-weight:500; }
@@ -210,7 +213,7 @@
       <h1>Hours_Tracker<span class="cursor"></span></h1>
       <p class="sub" id="headerCompany">fallen_horizon_llc // secure_shell</p>
     </div>
-    <div class="gear" id="openReport" style="margin-left:auto; width:68px; border-radius:2px; gap:4px;">
+    <div class="gear" id="openReport" style="margin-left:auto; width:auto; padding:0 14px; border-radius:2px; gap:6px;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px;"><path d="M9 17V9M15 17V5M4 17V13" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span data-i18n="reportBtnLabel" style="font-size:10px; text-transform:uppercase; letter-spacing:.05em; font-weight:700;">Report</span>
     </div>
